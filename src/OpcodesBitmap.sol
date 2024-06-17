@@ -55,7 +55,7 @@ contract OpcodesBitmap {
 
     function supportOpcode(uint8 opcode) external {
         assembly {
-            let mask := shl(opcode, 0x01)
+            let mask := shl(and(opcode, 0xff), 0x01)
             let currentOpcodesBitmap := sload(opcodesBitmap.slot)
 
             // if already added, revert
@@ -71,7 +71,7 @@ contract OpcodesBitmap {
 
     function deprecateOpcode(uint8 opcode) external {
         assembly {
-            let mask := shl(opcode, 0x01)
+            let mask := shl(and(opcode, 0xff), 0x01)
             let currentOpcodesBitmap := sload(opcodesBitmap.slot)
 
             // if not added, revert
@@ -87,7 +87,7 @@ contract OpcodesBitmap {
 
     function isSupportedOpcode(uint8 opcode) external view returns (bool isSupported) {
         assembly {
-            let mask := shl(opcode, 0x01)
+            let mask := shl(and(opcode, 0xff), 0x01)
             let currentOpcodesBitmap := sload(opcodesBitmap.slot)
             isSupported := and(currentOpcodesBitmap, mask)
         }
